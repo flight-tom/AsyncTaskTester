@@ -1,5 +1,5 @@
 # AsyncTaskTester
- 驗證 async / await 關鍵字的實際作用。
+ 驗證 [async / await](https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/concepts/async/) 關鍵字的實際作用。
 
 身為老程序員，過往撰寫多執行緒的程式碼，或是所謂**非同步(異步)** 呼叫，直覺就是拿出最原始的 *[Thread](https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.thread?view=net-6.0)* 類別解決。這樣過了幾年也沒有太在意微軟後來推出一系列 **TAP 工具類別包**，以及相關的 **關鍵字**。
 
