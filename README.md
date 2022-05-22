@@ -103,13 +103,14 @@ private static async void DoSomething() {
 ```
 
 執行：
+
 ![image](https://user-images.githubusercontent.com/3304716/169712674-5381c08b-395d-42d1-86e8-a481b5a7654c.png)
 
 如上圖，非同步如預料般....，等一下！結果跟前一版本不同，原本一號列車會帶著一三四車廂一起飛的景象，竟然會因為 *await* 出現的關係，讓*Task.Run()之外*的三號車廂停下來跟著二號車廂走。
 
 這代表了，*await* 宣告會讓整個 *async* 宣告的 function 變成**同步作業**，不管有沒有放在 *Task.Run()* 之內根本沒差。這個版本，我放在 [async_await](https://github.com/flight-tom/AsyncTaskTester/tree/async_await) 分支。
 
-##那也就是說，我其實可以....
+## 那也就是說，我其實可以....
 
 
 
