@@ -129,6 +129,27 @@ private static async void DoSomething() {
 
 以上版本，我放在 [wtf](https://github.com/flight-tom/AsyncTaskTester/tree/wtf) 分支。
 
+對了，如果 *async + await* 裡面再調用 *async + await* 的 Function 呢？
+
+```CSharp
+private static async void DoSomething() {
+    await Task.Run(() => { });  // 0_0... readability??
+
+    Thread.Sleep(10 * 1000); // 延長到 10 秒，避免 遞迴呼叫 太快洗屏
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+    // another async await call
+    DoSomething();
+}
+```
+
+![image](https://user-images.githubusercontent.com/3304716/169714536-c0fa6a76-0d62-4dd6-8834-ce89a067f856.png)
+
+由於 *Task* 調用的執行緒來自 [ThreadPool](https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.threadpool?view=net-6.0)，所以除了確認執行緒能夠成功切換以外，也同時觀察用完的執行緒是否會成功歸還。
+
+從執行結果看到， *ThreadID* 有時一致(重用)，有時候變換(切換)，效果正常。
+
+
 ## 分享完畢。
 
 
