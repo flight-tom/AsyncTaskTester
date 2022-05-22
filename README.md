@@ -88,6 +88,28 @@ private static void DoSomething() {
 
 很好，結果也在預料中。一號列車帶著一三四車廂飛奔，只有二號車廂轉交給第四列車。也就是說： 只有放在 *Task.Run()* 內的程式碼會被非同步執行。這個案例我們放在 [task_1](https://github.com/flight-tom/AsyncTaskTester/tree/task_1) 分支。
 
+## async & await 上場！
+
+在 *DoSomething()* 前面宣告 *async*，然後 *Task.Run()* 前面加上 *await*，修改如下：
+
+```CSharp
+private static async void DoSomething() {
+    await Task.Run(() => {
+        Thread.Sleep(1000);
+        Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+    });
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+}
+```
+
+執行：
+![image](https://user-images.githubusercontent.com/3304716/169712674-5381c08b-395d-42d1-86e8-a481b5a7654c.png)
+
+如上圖，非同步如預料般....，等一下！結果跟前一版本不同，原本一號列車會帶著一三四車廂一起飛的景象，竟然會因為 *await* 出現的關係，讓*Task.Run()之外*的三號車廂停下來跟著二號車廂走。
+
+這代表了，*await* 宣告會讓整個 *async* 宣告的 function 變成**同步作業**，不管有沒有放在 *Task.Run()* 之內根本沒差。這個版本，我放在 [async_await](https://github.com/flight-tom/AsyncTaskTester/tree/async_await) 分支。
+
+##那也就是說，我其實可以....
 
 
 
