@@ -16,9 +16,11 @@ namespace AsyncTaskTester {
         }
 
         private static void DoSomething() {
-            Thread.Sleep(1000);
-            Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
-            Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+            Task.Run(() => {
+                Thread.Sleep(1000);
+                Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+                Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+            });
         }
     }
 }
