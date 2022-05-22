@@ -54,7 +54,7 @@ private static async void DoSomething() {
 
 好，加入真正的非同步寫法吧。
 
-```
+```CSharp
 private static void DoSomething() {
     Task.Run(() => {
         Thread.Sleep(1000);
