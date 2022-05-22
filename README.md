@@ -34,3 +34,43 @@ public class Program {
 ![image](https://user-images.githubusercontent.com/3304716/169710279-ad3be408-a278-4255-9c78-f0e34b2fc9d8.png)
 
 *ThreadID* 一致，大家都在同一列火車上前進。*車廂 2* 前面卡頓了一秒鐘，二三四節車廂都同樣延遲。
+
+接著我們在 *DoSomething* 前面補上 *async* 關鍵字，再跑跑看。
+
+(**此時編譯器會出現警告，但不影響編譯和執行：**
+*警告	CS1998	這個非同步方法缺少 'await' 運算子，因此將以同步方式執行。請考慮使用 'await' 運算子等候未封鎖的應用程式開發介面呼叫，或使用 'await Task.Run(...)' 在背景執行緒上執行 CPU-bound 工作。*)
+
+```CSharp
+private static async void DoSomething() {
+    Thread.Sleep(1000);
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+}
+```
+
+![image](https://user-images.githubusercontent.com/3304716/169710963-454f1185-4774-4d97-a0d4-2bd2a437c616.png)
+
+可以看見執行結果如同前一結果，驗證網路文獻提到 *async* 並不會改變執行緒，這個關鍵字的作用只是用來輔助編譯器進行檢查和提醒，類似 *readonly* 類型的輔助宣告。
+
+好，加入真正的非同步寫法吧。
+
+```
+private static void DoSomething() {
+    Task.Run(() => {
+        Thread.Sleep(1000);
+        Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+        Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+    });
+}
+```
+
+我導入了 *[Task.Run()](https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.run?view=net-6.0)* 開啟新的執行緒進行耗費時間(1秒)的工作，請注意，*DoSomething* 這次並沒有添加 *async* 關鍵字，編譯器缺乏關鍵字提示後，並不會有任何警告，順利編譯，順利執行。
+
+![image](https://user-images.githubusercontent.com/3304716/169711437-50c42de1-7d22-4b5f-b4a7-c375557b270b.png)
+
+如我們預料的，上圖呈現一號火車帶著一四車廂直奔前行，二三車廂被丟包在四號列車，一秒後才發車。如此 *射後不理* 的非同步呼叫的目的已經達成，沒有使用 *async 和 await* 語法。
+
+這個版本我放在 task_0 這個分支。
+
+
+
