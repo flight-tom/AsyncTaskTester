@@ -64,7 +64,7 @@ private static void DoSomething() {
 }
 ```
 
-我導入了 *[Task.Run()](https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.run?view=net-6.0)* 開啟新的執行緒進行耗費時間(1秒)的工作，請注意，*DoSomething* 這次並沒有添加 *async* 關鍵字，編譯器缺乏關鍵字提示後，並不會有任何警告，順利編譯，順利執行。
+我導入了 *[Task.Run()](https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.tasks.task.run?view=net-6.0)* 開啟新的執行緒進行耗費時間(1秒)的工作，請注意，*DoSomething()* 這次並沒有添加 *async* 關鍵字，編譯器缺乏關鍵字提示後，並不會有任何警告，順利編譯，順利執行。
 
 ![image](https://user-images.githubusercontent.com/3304716/169711437-50c42de1-7d22-4b5f-b4a7-c375557b270b.png)
 
