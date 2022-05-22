@@ -72,5 +72,22 @@ private static void DoSomething() {
 
 這個版本我放在 task_0 這個分支。
 
+等等，我們把第三節車廂搬到 Task.Run() 之外的地方跑跑看吧！
+
+```CSharp
+private static void DoSomething() {
+    Task.Run(() => {
+        Thread.Sleep(1000);
+        Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+    });
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+}
+```
+
+![image](https://user-images.githubusercontent.com/3304716/169711941-990bd32b-70c5-4384-b6f7-6e2c315a40d6.png)
+
+很好，結果也在預料中。一號列車帶著一三四車廂飛奔，只有二號車廂轉交給第四列車。也就是說： 只有放在 *Task.Run()* 內的程式碼會被非同步執行。這個案例我們放在 task_1 分支。
+
+
 
 
