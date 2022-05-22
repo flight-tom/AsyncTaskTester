@@ -112,5 +112,23 @@ private static async void DoSomething() {
 
 ## 那也就是說，我其實可以....
 
+```CSharp
+private static async void DoSomething() {
+    await Task.Run(() => { });  // 0_0... readability??
+
+    Thread.Sleep(1000);
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 2");
+    Console.WriteLine($"[{(DateTime.Now - begin).TotalMilliseconds:0000}][{Thread.CurrentThread.ManagedThreadId}] STEP - 3");
+}
+```
+
+讓 *await Task.Run()* 虛晃一招後，怎麼寫都是非同步啦，執行起來跟前一結果完全相同。
+
+![image](https://user-images.githubusercontent.com/3304716/169713242-a3e1f58e-49e1-498d-853f-1a1f22e7c0ce.png)
+
+
+以上版本，我放在 [wtf](https://github.com/flight-tom/AsyncTaskTester/tree/wtf) 分支。
+
+## 分享完畢。
 
 
