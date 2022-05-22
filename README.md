@@ -29,7 +29,7 @@ public class Program {
 ```
 開始我們先以此同步執行的簡單流程執行看看。*DoSomething* 是之後會改成非同步方法的測試標的，所以裡面先埋了 *Thread.Sleep(1000)* 延遲一秒，達到較長執行時間，方便之後看出平行執行的差異，同時 *ThreadID* 方便我們追蹤不同執行緒的差異。
 
-這個同步執行的版本，我就放在 **Sync** 這個 branch 分支，他的執行結果也很直觀，如下：
+這個同步執行的版本，我就放在 **ync** 這個 branch 分支，他的執行結果也很直觀，如下：
 
 ![image](https://user-images.githubusercontent.com/3304716/169710279-ad3be408-a278-4255-9c78-f0e34b2fc9d8.png)
 
