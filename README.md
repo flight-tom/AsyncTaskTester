@@ -29,13 +29,13 @@ public class Program {
 ```
 開始我們先以此同步執行的簡單流程執行看看。*DoSomething()* 是之後*會改成非同步*方法的測試標的，所以裡面先埋了 *Thread.Sleep(1000)* 延遲一秒，達到較長執行時間，方便之後看出平行執行的差異，同時 *ThreadID* 方便我們追蹤不同執行緒的差異。
 
-這個同步執行的版本，我就放在 **sync** 這個 branch 分支，他的執行結果也很直觀，如下：
+這個同步執行的版本，我就放在 **[sync](https://github.com/flight-tom/AsyncTaskTester)** 這個 branch 分支，他的執行結果也很直觀，如下：
 
 ![image](https://user-images.githubusercontent.com/3304716/169710279-ad3be408-a278-4255-9c78-f0e34b2fc9d8.png)
 
 *ThreadID* 一致，大家都在同一列火車上前進。*車廂 2* 前面卡頓了一秒鐘，二三四節車廂都同樣延遲。
 
-接著我們在 *DoSomething* 前面補上 *async* 關鍵字，再跑跑看。
+接著我們在 *DoSomething()* 前面補上 *async* 關鍵字，再跑跑看。
 
 (**此時編譯器會出現警告，但不影響編譯和執行：**
 *警告	CS1998	這個非同步方法缺少 'await' 運算子，因此將以同步方式執行。請考慮使用 'await' 運算子等候未封鎖的應用程式開發介面呼叫，或使用 'await Task.Run(...)' 在背景執行緒上執行 CPU-bound 工作。*)
@@ -70,7 +70,7 @@ private static void DoSomething() {
 
 如我們預料的，上圖呈現一號火車帶著一四車廂直奔前行，二三車廂被丟包在四號列車，一秒後才發車。如此 *射後不理* 的非同步呼叫的目的已經達成，沒有使用 *async 和 await* 語法。
 
-這個版本我放在 task_0 這個分支。
+這個版本我放在 [task_0](https://github.com/flight-tom/AsyncTaskTester/tree/task_0) 這個分支。
 
 等等，我們把第三節車廂搬到 Task.Run() 之外的地方跑跑看吧！
 
@@ -86,7 +86,7 @@ private static void DoSomething() {
 
 ![image](https://user-images.githubusercontent.com/3304716/169711941-990bd32b-70c5-4384-b6f7-6e2c315a40d6.png)
 
-很好，結果也在預料中。一號列車帶著一三四車廂飛奔，只有二號車廂轉交給第四列車。也就是說： 只有放在 *Task.Run()* 內的程式碼會被非同步執行。這個案例我們放在 task_1 分支。
+很好，結果也在預料中。一號列車帶著一三四車廂飛奔，只有二號車廂轉交給第四列車。也就是說： 只有放在 *Task.Run()* 內的程式碼會被非同步執行。這個案例我們放在 [task_1](https://github.com/flight-tom/AsyncTaskTester/tree/task_1) 分支。
 
 
 
